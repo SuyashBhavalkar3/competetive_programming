@@ -1,0 +1,74 @@
+// Problem Statement: Given a linked list containing ‘N’ head nodes where every node in the linked list contains two pointers:
+
+// ‘Next’ points to the next node in the list
+// ‘Child’ pointer to a linked list where the current node is the head
+
+// Each of these child linked lists is in sorted order and connected by a 'child' pointer.
+// Your task is to flatten this linked list such that all nodes appear in a single layer or level in a 'sorted order'.
+
+// Look For Reference In the Book-3 On Pg No 4-5
+
+
+public class flatten_linkedlist {
+    public static class ListNode{
+        ListNode next;
+        ListNode child;
+        int val;
+        ListNode(int v){
+            val = v;
+            next = null;
+            child = null;
+        }
+    }
+    public static ListNode mergeLL(ListNode l1, ListNode l2){
+        ListNode dummy = new ListNode(-1);
+        ListNode res = dummy;
+        while(l1!=null && l2!=null){
+            if(l1.val<=l2.val){
+                res.child = l1;
+                res = res.child;
+                l1 = l1.child;
+            }
+            else{
+                res.child = l2;
+                res = res.child;
+                l2 = l2.child;
+            }
+            res.next = null;
+        }
+        if(l1!=null){
+            res.child = l1;
+        }
+        else{
+            res.child = l2;
+        }
+        return dummy.child;
+    }
+    public static ListNode flattenLL(ListNode head){
+        if(head == null||head.next == null){
+            return head;
+        }
+        ListNode MergeHead = flattenLL(head.next);
+        head = mergeLL(head, MergeHead);
+        return head;
+    }
+    public static void main(String[] args){
+        ListNode head = new ListNode(3);
+        head.next = new ListNode(2);
+        head.child = new ListNode(10);
+        head.next.next = new ListNode(1);
+        head.next.next.child = new ListNode(7);
+        head.next.next.child.child = new ListNode(11);
+        head.next.next.child.child.child = new ListNode(12);
+        head.next.next.next = new ListNode(4);
+        head.next.next.next.child = new ListNode(9); 
+        head.next.next.next.next = new ListNode(5); 
+        head.next.next.next.next.child = new ListNode(6);  
+        head.next.next.next.next.child.child = new ListNode(8); 
+        ListNode res = flattenLL(head);
+        while(res!=null){
+            System.out.println(res.val);
+            res = res.child;
+        }
+    }   
+}
