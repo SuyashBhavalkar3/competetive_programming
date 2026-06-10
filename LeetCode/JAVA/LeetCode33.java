@@ -7,19 +7,17 @@
 
 // Look For Reference In the Book On Pg No 23
 
-import java.util.Scanner;
-
 public class LeetCode33{
-    public static int binarySearchInRotatedArray(int[] nums, int target){
+    public static int findInRotated(int[] arr, int target){
         int low = 0;
-        int high = nums.length-1;
-        while (low<=high){
-            int mid = low + (high-low)/2;
-            if (nums[mid] == target){
+        int high = arr.length-1;
+        while(low<=high){
+            int mid = low + (high - low)/2;
+            if(arr[mid]==target){
                 return mid;
             }
-            if(nums[low]<=nums[mid]){
-                if((nums[low]<=target)&&(target<nums[mid])){
+            if(arr[low]<arr[mid]){
+                if(arr[low]<=target && target<arr[mid]){
                     high = mid-1;
                 }
                 else{
@@ -27,7 +25,7 @@ public class LeetCode33{
                 }
             }
             else{
-                if((nums[mid]<target)&&(target<=nums[high])){
+                if(arr[mid]<target && target<=arr[high]){
                     low = mid+1;
                 }
                 else{
@@ -37,26 +35,9 @@ public class LeetCode33{
         }
         return -1;
     }
-
     public static void main(String[] args) {
-        try(Scanner sc = new Scanner(System.in)){
-            System.out.println("Enter Limit Of Array : ");
-            int limit = sc.nextInt();
-            int[] arr = new int[limit];
-            System.out.println("Enter Elements : ");
-            for(int i=0;i<limit;i++){
-                arr[i] = sc.nextInt();
-            }
-            System.out.println("Enter Target Element : ");
-            int target = sc.nextInt();
-            int res = binarySearchInRotatedArray(arr, target);
-            if(res !=-1){
-                System.out.println("Target Element Found At Index "+res);
-            }
-            else{
-                System.out.println("Target Element Not Found.");
-            }
-        }
+        int[] nums = {4,5,6,7,0,1,2};
+        int index = findInRotated(nums, 0);
+        System.out.println("The Index at which element is present is : " + index);
     }
-
 }
