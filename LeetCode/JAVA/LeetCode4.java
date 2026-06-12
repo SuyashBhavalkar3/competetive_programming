@@ -7,42 +7,53 @@
 
 
 public class LeetCode4{
-    public static double getMedian(int[] nums1, int[] nums2){
-        if(nums1.length>nums2.length){
-            return getMedian(nums2, nums1);
+    public static double findMedianOfTwoSortedArray(int[] arr1, int[] arr2){
+        if(arr1.length>arr2.length){
+            return findMedianOfTwoSortedArray(arr2, arr1);
         }
-        int X = nums1.length;
-        int Y = nums2.length;
+        int n1 = arr1.length;
+        int n2 = arr2.length;
         int low = 0;
-        int high = X;
+        int high = n1;
         while(low<=high){
-            int partitionX = low + (high-low)/2;
-            int partitionY = (X + Y + 1)/2 - partitionX;
-            int maxLeftX = (partitionX==0)? Integer.MIN_VALUE : nums1[partitionX-1];
-            int maxLeftY = (partitionY==0)? Integer.MIN_VALUE : nums2[partitionY-1];
-            int minRightX = (partitionX==X)? Integer.MAX_VALUE : nums1[partitionX];
-            int minRightY = (partitionY==Y)? Integer.MAX_VALUE : nums2[partitionY];
-            if((maxLeftX<=minRightY) && (maxLeftY<=minRightX)){
-                if((X+Y)%2==0){
-                    return (double)((Math.max(maxLeftX, maxLeftY) + Math.min(minRightX, minRightY))/2);
+            int cut1 = low + (high-low)/2;
+            int cut2 = (n1+n2+1)/2 - cut1;
+            int left1, left2, right1, right2;
+            if(cut1==0)
+                left1=Integer.MIN_VALUE;
+            else
+                left1=arr1[cut1-1];
+            if(cut2==0)
+                left2=Integer.MIN_VALUE;
+            else
+                left2=arr2[cut2-1];
+            if(cut1==n1)
+                right1=Integer.MAX_VALUE;
+            else
+                right1=arr1[cut1];
+            if(cut2==n2)
+                right2=Integer.MAX_VALUE;
+            else
+                right2=arr2[cut2];
+            if(left1<=right2 && left2<=right1){
+                if((n1+n2)%2==0){
+                    return (Math.max(left1, left2)+Math.min(right1, right2))/2.0;
                 }
                 else{
-                    return (double)(Math.max(maxLeftX, maxLeftY));
+                    return Math.max(left1, left2);
                 }
             }
-            else if(maxLeftX>minRightY){
-                high = partitionX-1;
-            }
-            else{
-                low = partitionX+1;
-            }
+            if(left1>right2)
+                high = cut1-1;
+            else
+                low = cut1+1;
         }
         return 0.0;
     }
-    public static void main(String[] args){
+    public static void main(String[] args) {
         int[] arr1 = {1, 3, 8, 9};
         int[] arr2 = {7, 11, 18, 19, 21};
-        double median = getMedian(arr1, arr2);
-        System.out.println("Median Of Two Sorted Arrays Are : " + median);
+        double result = findMedianOfTwoSortedArray(arr1, arr2);
+        System.out.println("The Mediam Of Two Sorted Array Is : " + result);
     }
 }
