@@ -9,39 +9,52 @@
 #include<iostream>
 #include<vector>
 #include<algorithm>
-#include <climits>
+#include<climits>
 
 using namespace std;
 
-double getMedianOfTwoSortedArray(vector<int>& nums1, vector<int>& nums2){
-    int X = nums1.size();
-    int Y = nums2.size();
-    if(X>Y){
-        return getMedianOfTwoSortedArray(nums2, nums1);
+double findMedianTwoSortedArray(vector<int>& nums1, vector<int>& nums2){
+    if(nums1.size()>nums2.size()){
+        return findMedianTwoSortedArray(nums2, nums1);
     }
+
+    int n1 = nums1.size();
+    int n2 = nums2.size();
+
     int low = 0;
-    int high = X;
+    int high = n1;
+
     while(low<=high){
-        int partitionX = low + (high-low)/2;
-        int partitionY = ((X+Y+1)/2) - partitionX;
-        int maxLeftX = (partitionX==0)? INT_MIN : nums1[partitionX-1];
-        int maxLeftY = (partitionY==0)? INT_MIN : nums2[partitionY-1];
-        int minRightX = (partitionX==X)? INT_MAX : nums1[partitionX];
-        int minRightY = (partitionY==Y)? INT_MAX : nums2[partitionY];
-        if((maxLeftX<=minRightY) && (maxLeftY<=minRightX)){
-            if((X+Y)%2==0){
-                return static_cast<double>((max(maxLeftX, maxLeftY) + min(minRightX, minRightY))/2);
-            }
-            else{
-                return static_cast<double>(max(maxLeftX, maxLeftY));
-            }
+        int cut1 = low + (high - low)/2;
+        int cut2 = (n1 + n2 + 1)/2 - cut1;
+
+        int l1, l2, r1, r2;
+        if(cut1==0)
+            l1 = INT_MIN;
+        else
+            l1 = nums1[cut1-1];
+        if(cut1==n1)
+            r1 = INT_MAX;
+        else
+            r1 = nums1[cut1];
+        if(cut2==0)
+            l2 = INT_MIN;
+        else    
+            l2 = nums2[cut2-1];
+        if(cut2==n2)
+            r2 = INT_MAX;
+        else
+            r2 = nums2[cut2];
+        if(l1<=r2 && l2<=r1){
+            if((n1+n2)%2==0)
+                return (max(l1,l2) +  min(r1, r2))/2.0;
+            else
+                return max(l1, l2);
         }
-        else if(maxLeftX>minRightY){
-            high = partitionX-1;
-        }
-        else{
-            low = partitionX+1;
-        }
+        if(l1>r2)
+            high = cut1-1;
+        else   
+            low = cut1+1;
     }
     return 0.0;
 }
@@ -49,7 +62,6 @@ double getMedianOfTwoSortedArray(vector<int>& nums1, vector<int>& nums2){
 int main(){
     vector<int> arr1 = {1, 3, 8, 9};
     vector<int> arr2 = {7, 11, 18, 19, 21};
-    double median = getMedianOfTwoSortedArray(arr1, arr2);
-    cout<<"Median Of Two Sorted Array Is : "<<median<<endl;
-    return 0;
+    double result = findMedianTwoSortedArray(arr1, arr2);
+    cout<<"The Median Of Two Sorted Arrays Is : "<<result<<endl;
 }
