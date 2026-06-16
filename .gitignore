@@ -1,3 +1,6 @@
 *.class
 *.exe
 *vscode/
+LeetCode/CPP/*
+!LeetCode/CPP/*.cpp
+!LeetCode/CPP/*.h
