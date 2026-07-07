@@ -20,7 +20,7 @@ int allocatePage(vector<int>& nums, int mid, int m){
 }
 
 int allocateMinimumPages(vector<int>& nums, int m){
-    int low = *min_element(nums.begin(), nums.end());
+    int low = *max_element(nums.begin(), nums.end());
     int high = accumulate(nums.begin(), nums.end(), 0);
     cout<<low<<" "<<high<<endl;
     while(low<=high){
