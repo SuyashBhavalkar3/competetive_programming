@@ -8,8 +8,14 @@ int single_element(vector<int> &nums) {
   if (n == 1) {
     return nums[0];
   }
-  int low = 0;
-  int high = n - 1;
+  if (nums[0] != nums[1]) {
+    return nums[0];
+  }
+  if (nums[n - 1] != nums[n - 2]) {
+    return nums[n - 1];
+  }
+  int low = 1;
+  int high = n - 2;
   while (low <= high) {
     int pivot = low + (high - low) / 2;
     if (nums[pivot] != nums[pivot - 1] && nums[pivot] != nums[pivot + 1]) {
