@@ -4,6 +4,9 @@
 using namespace std;
 
 int helper(vector<int>& nums, int k){
+    if(k<0){
+        return 0;
+    }
     int cnt = 0;
     int left = 0;
     int odd = 0;
