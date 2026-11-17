@@ -7,19 +7,20 @@ using namespace std;
 int Find_Longest_Subarray(vector<int>& nums, int k){
     unordered_map<int, int> map;
     map[0] = 0;
-    int i = 1;
     int sum = 0;
     int maxLength = 0;
-    for(int num : nums){
-        sum+=num;
-        int needed = k - sum;
-        if(map.find(needed)!=map.end()){
-            maxLength = max(maxLength, i - map[needed]);
+    int left = 0;
+    int right = 0;
+    while(right<nums.size()){
+        sum+=nums[right];
+        if(sum==k){
+            maxLength = max(maxLength, right - left + 1);
         }
-        if(map.find(sum)==map.end()){
-            map[sum] = i;
+        if(sum>k){
+            sum-=nums[left];
+            left++;
         }
-        i++;
+        right++;
     }
     return maxLength;
 }
