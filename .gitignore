@@ -2,5 +2,12 @@
 *.exe
 *vscode/
 LeetCode/CPP/*
-!LeetCode/CPP/*.cpp
-!LeetCode/CPP/*.h 
+!CP/
+!Amazon OA/*.cpp
+!Amazon OA/*.h
+# Windows executables
+*.exe
+
+# macOS / Linux compiled binaries (specific build directories)
+bin/
+build/
