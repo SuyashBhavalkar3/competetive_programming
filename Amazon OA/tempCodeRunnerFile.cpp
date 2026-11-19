@@ -1,50 +1,38 @@
-#include <utility>
+#include <vector>
+#include <iostream>
 using namespace std;
 
-// Definition for a binary tree node
-struct TreeNode {
-  int val;
-  TreeNode *left;
-  TreeNode *right;
-  TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
-};
-
-TreeNode *prevNode;
-TreeNode *first;
-TreeNode *middle;
-TreeNode *last;
-
-void helper(TreeNode *root) {
-  if (root == nullptr) {
-    return;
-  }
-  helper(root->left);
-  if (prevNode!=nullptr && prevNode->val > root->val) {
-    if (first == nullptr) {
-      first = prevNode;
-      middle = root;
-    } else {
-      last = root;
-    }
-  }
-  prevNode = root;
-  helper(root->right);
+bool comparator(vector<int>& first, vector<int>& second){
+    return first[2]>second[2];
 }
 
-void Make_BST(TreeNode *root) {
-  helper(root);
-  if (first != nullptr && last != nullptr) {
-    swap(first->val, last->val);
-  } else {
-    swap(first->val, middle->val);
-  }
+vector<int> jobScheduling(vector<vector<int>>& jobs){
+    sort(jobs.begin(), jobs.end(), comparator);
+    int maxDeadline = -1;
+    for(auto job : jobs){
+        if(job[1]>maxDeadline){
+            maxDeadline = job[1];
+        }
+    }
+    int profit = 0;
+    int jobsDone = 0;
+    vector<int> slots(maxDeadline + 1, -1);
+    for (const auto& job : jobs) {
+        for (int j = job[1]; j >= 1; j--) {
+            if (slots[j] == -1) {
+                slots[j] = job[0];
+                jobsDone++;
+                profit += job[2];
+                break;
+            }
+        }
+    }
+    return {jobsDone, profit};
 }
 
 int main() {
-  TreeNode *root = new TreeNode(3);
-  root->left = new TreeNode(1);
-  root->right = new TreeNode(4);
-  root->right->left = new TreeNode(2);
-  Make_BST(root);
-  return 0;
+    vector<vector<int>> jobs= {{1, 2, 100}, {2, 1, 19}, {3, 2, 27}, {4, 1, 25}, {5, 3, 15}};
+    vector<int> result = jobScheduling(jobs);
+    cout << result[0] << ' ' << result[1] << '\n';
+    return 0;
 }
